@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>送信機</title>
+<link rel="stylesheet" href="./css/style.css">
+<script src="./js/transmitter.js" defer></script>
+</head>
+<body>
+<header>
+<h1>送信機</h1>
+</header>
+<main>
+<section>
+<h2>送信機の設定</h2>
+<form id="transmitter">
+<fieldset>
+<legend>通信の設定</legend>
+<div>
+<label for="baud">Baud rate:</label>
+<input type="number" id="baud" min="0" max="100" value="10">
+← 嘘かも
+</div>
+</fieldset>
+<fieldset>
+<legend>メッセージの設定</legend>
+<div>
+<label for="message">Message:</label>
+<textarea id="message" required></textarea>
+</div>
+</fieldset>
+<button id="trigger">送信する</button>
+</form>
+</form>
+<hr>
+<p>
+激しく点滅する画面に気を付けてね。
+</p>
+<div class="flex">
+<canvas id="clk"></canvas>
+<canvas id="dat"></canvas>
+</div>
+<output id="sent"></output>
+</section>
+</main>
+</body>
+</html>

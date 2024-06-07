@@ -1,0 +1,27 @@
+* {
+	box-sizing: border-box;
+}
+button,
+input,
+textarea {
+	font: inherit;
+}
+canvas {
+	display: block;
+	max-width: 100%;
+	border: solid silver;
+}
+textarea {
+	display: block;
+	width: 100%;
+	resize: vertical;
+}
+fieldset {
+	margin-block-end: 1rem;
+}
+.flex {
+	display: flex;
+}
+.flex * {
+	flex-grow: 1;
+}
