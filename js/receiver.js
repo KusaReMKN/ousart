@@ -46,13 +46,14 @@ clear.addEventListener('click', clearBuffer);
 function
 decodeBuffer()
 {
+	try {
 	let b;
-	while ((b = dataBuf.shift()) != 0)
+	while (dataBuf.length > 0 && (b = dataBuf.shift()))
 		;
 	dataBuf.unshift(b);
 
 	let decodeBuf = [];
-	while (dataBuf[0] == 0) {
+	while (dataBuf.length > 0 && dataBuf[0] === 0) {
 		dataBuf.shift();
 		let c = 0;
 		for (let i = 0; i < 8; i++) {
@@ -64,6 +65,9 @@ decodeBuffer()
 	const u8arr = new Uint8Array(decodeBuf);
 	const decoder = new TextDecoder();
 	data.value = decoder.decode(u8arr);
+	} catch (err) {
+		alert(err);
+	}
 }
 decode.addEventListener('click', decodeBuffer);
 
