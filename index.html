@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画面とカメラで可視光通信体験</title>
+<link rel="stylesheet" href="./css/normalize.css">
+<link rel="stylesheet" href="./css/sakura.css">
+<script defer src="https://platform.twitter.com/widgets.js"></script>
+<style>
+p { text-align: justify; }
+figure img { margin-block-end: 0; }
+figure figcaption { text-align: center; }
+.end { text-align: end; }
+</style>
+</head>
+<body>
+<header>
+<h1>画面とカメラで可視光通信体験</h1>
+<blockquote>
+きらめいて ゆらめいて 震えてるシグナル
+<div class="end">
+― <a href="https://www.youtube.com/watch?v=wSTbdqo-j74"><cite>星座になれたら</cite></a>（結束バンド; 作詞: 樋口愛）
+</div>
+</blockquote>
+</header>
+<main>
+<section>
+<h2>これはなに</h2>
+<p>
+目に見える光を使ってデータを伝送できる、可視光通信の実験システムです。
+光検出器としてコンピュータに接続された WEB カメラやスマートフォンのカメラなどを利用するため、特別な機器を必要とせずに可視光通信を体験できます。
+</p>
+</section>
+<section>
+<h2>技術的なはなし</h2>
+<p>
+同期シリアル通信のプロトコルである Universal Synchronous and Asynchronous Receiver/Transmitter（USART）の単純なバージョンを光で実現します。
+現時点では、データビットは 8 bit、パリティビットは無し、ストップビットは 1 bit に固定されています。
+画面の左側がクロック信号、右側がデータ信号に対応します。
+また、電気信号のハイレベルに白が、ローレベルに黒が対応します。
+例として、<a href="#time_chart">文字列 “MZ” を送信したときのタイムチャート</a>を示しておきます。
+</p>
+<figure id="time_chart">
+<img src="./img/timechart.webp" alt="データ “MZ” を送信したときのタイムチャート" width="1280" height="480" loading="lazy" decoding="async">
+<figcaption>文字列 “MZ” を送信したときのタイムチャート</figcaption>
+</figure>
+<p>
+通信速度はディスプレイとカメラとのフレームレートに依存します。
+送信機に使われるディスプレイは少なくとも 60 Hz くらいで画面の表示を更新し、受信機で使われるカメラには 60 Hz くらいのフレームレートを要求していることから、おおよそ 30 baud くらいが通信速度の限界であると思われます。
+なお、システム内部で利用しているインターバルタイマ（<code>setInterval()</code>）の最小周期が 10 ms であることから、実装上の通信速度の限界は 50 baud です。
+</p>
+</section>
+<section>
+<h2>プログラム本体</h2>
+<ul>
+<li><a href="./transmitter.html">そうしんき</a></li>
+<li><a href="./receiver.html">じゅしんき</a></li>
+</ul>
+</section>
+<section>
+<h2>使い方</h2>
+<section>
+<h3>送信機の使い方</h3>
+<ol>
+<li><p>
+<a href="./transmitter.html">送信機のページ</a> を開きます。
+</p></li>
+<li><p>
+<b>通信の設定</b>から <b>Baud rate</b>（ボーレート）を適当な値に設定します。
+Baud rate は 1 秒間に変調を行う回数のことです。
+<b>10</b> くらいを指定すると通信誤りを抑えられると思います。
+</p></li>
+<li><p>
+<b>メッセージの設定</b>から <b>Message</b> を設定します。
+英数字だけでなく、漢字や仮名、絵文字を含めることもできます。
+長いメッセージを送信しようとすると長い時間が掛かるため、ほどほどの長さにしておきます。
+</p></li>
+<li><p>
+ここで<b>受信機</b>を準備しておきます。
+受信機の準備ができたら<b>送信する</b>ボタンを押下します。
+</p></li>
+<li><p>
+画面が点滅してメッセージを受信機に送信します。
+点滅部分の下には送信した各ビットが 0 と 1 とで表示されます。
+</p></li>
+<li><p>
+おわりです。
+</p></li>
+</ol>
+</section>
+<section>
+<h3>受信機の使い方</h3>
+<ol>
+<li><p>
+<a href="./receiver.html">受信機のページ</a> を開きます。
+</p></li>
+<li><p>
+<b>カメラを開始</b>ボタンを押下してカメラの利用を許可します。
+カメラを利用できるようになるとカメラ越しの景色が表示されます。
+</p></li>
+<li><p>
+ここで<b>送信機</b>の準備をしておきます。
+</p></li>
+<li><p>
+カメラ越しの景色の中央部分に表示されている二つの「的」を送信機のそれぞれの領域に合わせた上で、<b>受信開始</b>ボタンを押下します。
+</p></li>
+<li><p>
+送信機からデータを送信してもらいます。
+送信機の画面の点滅を識別して、メッセージを受信します。
+画面の下部分には受信した各ビットが 0 と 1 とで表示されます。
+</p></li>
+<li><p>
+送信が完了したら<b>受信中</b>ボタンを押下して受信を終了します。
+</p></li>
+<li><p>
+<b>復号する</b>ボタンを押下するとメッセージを復号して表示します。
+受信に失敗していた場合、文字化けすることがあります。
+</p></li>
+<li><p>
+おわりです。
+</p></li>
+</ol>
+</section>
+</section>
+<hr>
+<section>
+<h2>参考（元ネタ）</h2>
+<blockquote class="twitter-tweet">
+<p lang="ja" dir="ltr">
+ブラウザから画面の点滅で無理矢理I2Cしてみた
+<a href="https://twitter.com/hashtag/shapolab?src=hash&amp;ref_src=twsrc%5Etfw">#shapolab</a>
+<a href="https://t.co/PQHOCMhLbP">pic.twitter.com/PQHOCMhLbP</a></p>&mdash; シャポコ🌵 (@shapoco)
+<a href="https://twitter.com/shapoco/status/1371862918006939648?ref_src=twsrc%5Etfw">March 16, 2021</a></blockquote>
+</section>
+</main>
+</body>
+</html>
