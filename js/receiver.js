@@ -97,7 +97,11 @@ startCamera()
 		useCamera.textContent = 'カメラを停止';
 		setInterval(() => {
 			const ctx = disp.getContext('2d');
-			ctx.drawImage(video, 0,0, disp.width,disp.height);
+			const k = +zoom.value;
+			const videox = (-k * disp.width + disp.width) / 2;
+			const videoy = (-k * disp.height + disp.height) / 2;
+			ctx.drawImage(video, videox, videoy,
+					k*disp.width, k*disp.height);
 			ctx.strokeStyle = 'red';
 			ctx.strokeRect(clkX-15, clkY-15, 30, 30);
 			ctx.strokeRect(clkX-5, clkY-5, 10, 10);
